@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hello, EJS</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="/js/main.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <!-- localhost:4000 -->
+  <a href="/">홈으로</a>
+  <h1>회원 목록</h1>
+  <h2>총 회원 수 <%= userCounts %></h2>
+  <ul>
+    <% if (userCounts > 1) { %>
+    <% for(let i = 0; i < userCounts; i++) { %>
+    <li>
+      <p>ID: <%= USER[i].id %></p>
+      <p>이름: <%= USER[i].name %></p>
+      <p>e-mail: <%= USER[i].email %></p>
+      <a href="#" onclick="deleteUser('<%= USER[i].id %>');">삭제하기</a>
+    </li>
+    <% } %>
+    <% } else { %>
+    <li>회원 정보가 없습니다!</li>
+    <% } %>
+  </ul>
+  <!-- localhost:4000/public -->
+  <img src="/images/hero1.png" alt="히어로1" />
+
+  <!-- 회원 가입 폼 -->
+  <form action="/users" method="POST">
+    <div>
+      <label>아이디</label>
+      <input type="text" name="id" />
+    </div>
+    <div>
+      <label>이름</label>
+      <input type="text" name="name" />
+    </div>
+    <div>
+      <label>이메일</label>
+      <input type="email" name="email" />
+    </div>
+    <button type="submit">회원 등록</button>
+  </form>
+
+</body>
+
+<script>
+  function deleteUser(userID) {
+    fetch(`http://localhost:4000/users/${userID}`, {
+      method: 'delete',
+      headers: {
+        'Content-type': 'application/json'
+      }
+    }).then((res) => {
+      console.log(res);
+      location.reload();
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+</script>
+
+</html>
